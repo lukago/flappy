@@ -32,8 +32,8 @@ public class Bird {
 		birdShape.radius = 15;
 		
 		velocity = 0f;
-		gravity = -20f;
-		lift = 500f;
+		gravity = -30f;
+		lift = 600f;
 		
 		birdTexture = new Texture("bird.png");	
 	}

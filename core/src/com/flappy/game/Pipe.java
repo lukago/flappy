@@ -10,7 +10,6 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
 public class Pipe {
-	
 	private Sprite pipeUpSprite;
 	private Sprite pipeLowSprite;
 	private Texture pipeTexture;
@@ -33,8 +32,8 @@ public class Pipe {
 		window.y = Gdx.graphics.getHeight();
 		startPos = window.x;
 		
-		gapHeight = 140;
-		speed = 150;
+		gapHeight = 120;
+		speed = 200;
 		
 		pipeUpSprite = new Sprite();
 		pipeLowSprite = new Sprite();
@@ -52,7 +51,7 @@ public class Pipe {
 	
 	public void setPipes() {
 			
-		pipeLow.width = 100;
+		pipeLow.width = 80;
 		pipeLow.height = getRandHeight();
 		pipeLow.x = startPos;
 		pipeLow.y = 0;
@@ -68,9 +67,8 @@ public class Pipe {
 	
 	public void updatePipes(float deltaTimeSeconds) {
 		pipeLow.x -= speed*deltaTimeSeconds;
-		pipeUp.x = pipeLow.x;
 		pipeLowSprite.setPosition(pipeLow.x, pipeLow.y);
-		pipeUpSprite.setPosition(pipeUp.x, pipeUp.y);
+		pipeUpSprite.setPosition(pipeLow.x, pipeUp.y);
 	}
 	
 	public void drawPipes(SpriteBatch sprbatch) {

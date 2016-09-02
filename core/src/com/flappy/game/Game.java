@@ -18,23 +18,20 @@ public class Game extends ApplicationAdapter {
 	private int distance;
 	
 	// variables for time handling
-	static final float DT = 1/60.0f;
-	static final int MAX_UPDATES_PER_FRAME = 2; 
-	private long currentTimeMillis;
+	static final float DT = 1/30.0f;
 	
 	@Override
 	public void create () {
 		/**
 		 * initialization of all objects and variables
 		 */
+		batch = new SpriteBatch();
+		bird = new Bird();
 		distance = 400;
 		for (int i=0; i < pipes.length; i++) {
 			pipes[i] = new Pipe();
 			pipes[i].setXPos(pipes[i].getPipeLow().x + i*distance);
 		}
-		batch = new SpriteBatch();
-		bird = new Bird();
-		currentTimeMillis = System.currentTimeMillis();
 	}
 
 	@Override
@@ -42,17 +39,9 @@ public class Game extends ApplicationAdapter {
 		/**
 		 * time handling and update section
 		 */
-		int updateCount = 0;
-		long newTimeMillis = System.currentTimeMillis();
-	    float frameTimeSeconds = (newTimeMillis - currentTimeMillis) / 1000f;
-	    currentTimeMillis = newTimeMillis;
 	    
-	    while (frameTimeSeconds > 0f && updateCount <= MAX_UPDATES_PER_FRAME) {   	
-	        float deltaTimeSeconds = Math.min(frameTimeSeconds, DT);
-	        update(deltaTimeSeconds);
-	        frameTimeSeconds -= deltaTimeSeconds;
-	        ++updateCount;
-	    }
+		float deltaTimeSeconds = Math.min(Gdx.graphics.getDeltaTime(), DT);
+		update(deltaTimeSeconds);
 		
 		/**
 		 * draw section
@@ -71,7 +60,7 @@ public class Game extends ApplicationAdapter {
 	public void update(float deltaTimeSeconds) {
 		/*
 		 * update utility method
-		 * use in render() method in time loop
+		 * use in render() method before drawing
 		 */
 		bird.updateBird(deltaTimeSeconds);
 		
@@ -82,9 +71,10 @@ public class Game extends ApplicationAdapter {
         //pipes crossing border handling
         for(int i=0; i<pipes.length; i++) {
         	if (pipes[i].getPipeLow().x < -pipes[i].getPipeLow().width ) {
-            	pipes[i].setXPos(pipes[Math.floorMod(i-1, pipes.length)].getPipeLow().x+distance);
+        		pipes[i].setPipes();
+            	pipes[i].setXPos(pipes[myFloorMod(i-1, pipes.length)].getPipeLow().x+distance);
         	}
-        } 
+        }
 	}
 	
 	@Override
@@ -95,4 +85,10 @@ public class Game extends ApplicationAdapter {
 			pipes[i].disposePipes();
 		}
 	}
+	
+	public int myFloorMod(int num, int mod) {
+		return ( ( num%mod ) + mod )%mod;
+	}
 }
+
+
