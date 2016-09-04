@@ -12,8 +12,8 @@ public class Bird {
 	// bird representation
 	 private Texture birdTexture;
 	 private Circle birdShape;
-	 
-	 // movement
+
+	// movement
 	private float velocity;
 	private float gravity;
 	private float lift;
@@ -29,17 +29,17 @@ public class Bird {
 		birdShape = new Circle();
 		birdShape.x = window.x/4;
 		birdShape.y = window.y/2;
-		birdShape.radius = 15;
+		birdShape.radius = 10;
 		
 		velocity = 0f;
 		gravity = -30f;
-		lift = 600f;
+		lift = 400f;
 		
 		birdTexture = new Texture("bird.png");	
 	}
 	
 	public void drawBird(SpriteBatch sprbatch) {
-		sprbatch.draw(birdTexture, birdShape.x, birdShape.y);		
+		sprbatch.draw(birdTexture, birdShape.x - birdShape.radius, birdShape.y - birdShape.radius);
 	}
 	
 	public void updateBird(float deltaTimeSeconds) {	
@@ -64,6 +64,10 @@ public class Bird {
 	
 	public void disposeBird() {
 		birdTexture.dispose();
+	}
+	
+	 public Circle getBirdShape() {
+		return birdShape;
 	}
 
 }

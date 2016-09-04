@@ -45,8 +45,8 @@ public class Pipe {
 		setPipes();
 	}
 	
-	public int getRandHeight() {
-		return generator.nextInt((int) (window.y-2*gapHeight));
+	public float getRandHeight() {
+		return generator.nextFloat()*(window.x-20)+10;
 	}
 	
 	public void setPipes() {
@@ -67,8 +67,9 @@ public class Pipe {
 	
 	public void updatePipes(float deltaTimeSeconds) {
 		pipeLow.x -= speed*deltaTimeSeconds;
+		pipeUp.x = pipeLow.x;
 		pipeLowSprite.setPosition(pipeLow.x, pipeLow.y);
-		pipeUpSprite.setPosition(pipeLow.x, pipeUp.y);
+		pipeUpSprite.setPosition(pipeUp.x, pipeUp.y);
 	}
 	
 	public void drawPipes(SpriteBatch sprbatch) {
@@ -76,6 +77,11 @@ public class Pipe {
 		pipeUpSprite.draw(sprbatch);
 	}
 	
+	public void disposePipes() {
+		pipeTexture.dispose();
+	}
+	
+	// setters & getters
 	public void setXPos(float x) {
 		pipeUp.x = x;
 		pipeLow.x = x;
@@ -87,10 +93,5 @@ public class Pipe {
 
 	public Rectangle getPipeLow() {
 		return pipeLow;
-	}
-	
-	public void disposePipes() {
-		pipeTexture.dispose();
-	}
-		
+	}	
 }

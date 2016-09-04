@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 public class Game extends ApplicationAdapter {
 	private SpriteBatch batch;
 	private Bird bird;
+	private Collision collision;
 	
 	// array of pipes
 	// set size here to number of displayed pipes
@@ -25,6 +26,7 @@ public class Game extends ApplicationAdapter {
 		/**
 		 * initialization of all objects and variables
 		 */
+		collision = new Collision();
 		batch = new SpriteBatch();
 		bird = new Bird();
 		distance = 400;
@@ -46,7 +48,7 @@ public class Game extends ApplicationAdapter {
 		/**
 		 * draw section
 		 */
-		Gdx.gl.glClearColor(0, 0, 0, 1);
+		Gdx.gl.glClearColor(0, 0, 0, 0);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
 		batch.begin();
@@ -68,13 +70,19 @@ public class Game extends ApplicationAdapter {
 			pipes[i].updatePipes(deltaTimeSeconds);
 		}
         
-        //pipes crossing border handling
+        //pipes crossing game window border handling
         for(int i=0; i<pipes.length; i++) {
         	if (pipes[i].getPipeLow().x < -pipes[i].getPipeLow().width ) {
         		pipes[i].setPipes();
             	pipes[i].setXPos(pipes[myFloorMod(i-1, pipes.length)].getPipeLow().x+distance);
         	}
         }
+        
+        //collision temporary behavior 
+        if ( collision.isbirdPipeCollision(bird, pipes) ) {
+        	this.create();
+        }
+        
 	}
 	
 	@Override
