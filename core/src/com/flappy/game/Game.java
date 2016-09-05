@@ -6,6 +6,11 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 
+/**
+ * Flappy Bird game clone 
+ * @author https://github.com/glbwsk
+ */
+
 public class Game extends ApplicationAdapter {
 	private SpriteBatch batch;
 	private Bird bird;
@@ -13,10 +18,7 @@ public class Game extends ApplicationAdapter {
 	
 	// array of pipes
 	// set size here to number of displayed pipes
-	private Pipe[] pipes = new Pipe[2];
-	
-	// distance between two pipes
-	private int distance;
+	private PipeArray pipes;
 	
 	// variables for time handling
 	static final float DT = 1/30.0f;
@@ -29,73 +31,52 @@ public class Game extends ApplicationAdapter {
 		collision = new Collision();
 		batch = new SpriteBatch();
 		bird = new Bird();
-		distance = 400;
-		for (int i=0; i < pipes.length; i++) {
-			pipes[i] = new Pipe();
-			pipes[i].setXPos(pipes[i].getPipeLow().x + i*distance);
-		}
+		pipes = new PipeArray(2, 400);
 	}
 
 	@Override
-	public void render () {
+	public void render () {	
 		/**
-		 * time handling and update section
+		 * UPDATE SECTION
 		 */
-	    
 		float deltaTimeSeconds = Math.min(Gdx.graphics.getDeltaTime(), DT);
 		update(deltaTimeSeconds);
 		
 		/**
-		 * draw section
+		 * DRAW SECTION
 		 */
 		Gdx.gl.glClearColor(0, 0, 0, 0);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
 		batch.begin();
 		bird.drawBird(batch);
-		for(int i=0; i<pipes.length; i++) {
-			pipes[i].drawPipes(batch);
-		}
+		pipes.drawPipesArr(batch);
 		batch.end();
 	}
 	
 	public void update(float deltaTimeSeconds) {
-		/*
+		/**
 		 * update utility method
 		 * use in render() method before drawing
 		 */
 		bird.updateBird(deltaTimeSeconds);
-		
-		for(int i=0; i<pipes.length; i++) {
-			pipes[i].updatePipes(deltaTimeSeconds);
-		}
+		pipes.updatePipesArr(deltaTimeSeconds);
         
-        //pipes crossing game window border handling
-        for(int i=0; i<pipes.length; i++) {
-        	if (pipes[i].getPipeLow().x < -pipes[i].getPipeLow().width ) {
-        		pipes[i].setPipes();
-            	pipes[i].setXPos(pipes[myFloorMod(i-1, pipes.length)].getPipeLow().x+distance);
-        	}
-        }
-        
-        //collision temporary behavior 
-        if ( collision.isbirdPipeCollision(bird, pipes) ) {
+        /**
+         * COLLISION AND GAME STATE UPDATE SECTION
+         * temporary behavior
+         * TODO: menu / game over summary
+         */
+        if ( collision.isbirdPipeCollision(bird, pipes.getPipes()) ) {
         	this.create();
-        }
-        
+        }    
 	}
 	
 	@Override
 	public void dispose () {
 		batch.dispose();
 		bird.disposeBird();
-		for(int i=0; i<pipes.length; i++) {
-			pipes[i].disposePipes();
-		}
-	}
-	
-	public int myFloorMod(int num, int mod) {
-		return ( ( num%mod ) + mod )%mod;
+		pipes.disposePipesArr();
 	}
 }
 

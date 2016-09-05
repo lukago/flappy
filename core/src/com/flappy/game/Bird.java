@@ -33,7 +33,7 @@ public class Bird {
 		
 		velocity = 0f;
 		gravity = -30f;
-		lift = 400f;
+		lift = 500f;
 		
 		birdTexture = new Texture("bird.png");	
 	}
@@ -51,9 +51,9 @@ public class Bird {
 			velocity = 0;
 			birdShape.y = window.y - 2*birdShape.radius;
 		} 
-		if ( birdShape.y < 0 ) {
+		if ( birdShape.y < birdShape.radius ) {
 			velocity = 0;
-			birdShape.y = 0;
+			birdShape.y = birdShape.radius;
 		}
 		
 		// input handling 

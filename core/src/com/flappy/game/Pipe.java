@@ -9,6 +9,11 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
+/**
+ * this class represents single Pipe 
+ * including upper and lower pipe on the same X position
+ */
+
 public class Pipe {
 	private Sprite pipeUpSprite;
 	private Sprite pipeLowSprite;
