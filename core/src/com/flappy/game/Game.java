@@ -4,6 +4,7 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 
 
 /**
@@ -15,6 +16,10 @@ public class Game extends ApplicationAdapter {
 	private SpriteBatch batch;
 	private Bird bird;
 	private Collision collision;
+	private Score score;
+	
+	// game window size
+	static Vector2 window;	
 	
 	// array of pipes
 	// set size here to number of displayed pipes
@@ -28,10 +33,15 @@ public class Game extends ApplicationAdapter {
 		/**
 		 * initialization of all objects and variables
 		 */
+		window = new Vector2();	
+		window.x = Gdx.graphics.getWidth();
+		window.y = Gdx.graphics.getHeight();
+
 		collision = new Collision();
 		batch = new SpriteBatch();
 		bird = new Bird();
 		pipes = new PipeArray(2, 400);
+		score = new Score(40, 2);
 	}
 
 	@Override
@@ -51,6 +61,7 @@ public class Game extends ApplicationAdapter {
 		batch.begin();
 		bird.drawBird(batch);
 		pipes.drawPipesArr(batch);
+		score.drawScore(batch);
 		batch.end();
 	}
 	
@@ -61,6 +72,7 @@ public class Game extends ApplicationAdapter {
 		 */
 		bird.updateBird(deltaTimeSeconds);
 		pipes.updatePipesArr(deltaTimeSeconds);
+		score.updateScore(pipes.getPipes(), bird);
         
         /**
          * COLLISION AND GAME STATE UPDATE SECTION
@@ -77,6 +89,7 @@ public class Game extends ApplicationAdapter {
 		batch.dispose();
 		bird.disposeBird();
 		pipes.disposePipesArr();
+		score.disposeScore();
 	}
 }
 

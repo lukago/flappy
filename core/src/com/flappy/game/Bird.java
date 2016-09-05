@@ -4,8 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Circle;
-import com.badlogic.gdx.math.Vector2;
-
 
 public class Bird {
 	
@@ -18,17 +16,11 @@ public class Bird {
 	private float gravity;
 	private float lift;
 	
-	// game window size
-	private Vector2 window;	
-	
 	public Bird() {
-		window = new Vector2();
-		window.x = Gdx.graphics.getWidth();
-		window.y = Gdx.graphics.getHeight();
 		
 		birdShape = new Circle();
-		birdShape.x = window.x/4;
-		birdShape.y = window.y/2;
+		birdShape.x = Game.window.x/4;
+		birdShape.y = Game.window.y/2;
 		birdShape.radius = 10;
 		
 		velocity = 0f;
@@ -47,9 +39,9 @@ public class Bird {
 		birdShape.y += velocity*deltaTimeSeconds;	
 		
 		// crossing game window handling
-		if ( birdShape.y > window.y - 2*birdShape.radius) {
+		if ( birdShape.y > Game.window.y - 2*birdShape.radius) {
 			velocity = 0;
-			birdShape.y = window.y - 2*birdShape.radius;
+			birdShape.y = Game.window.y - 2*birdShape.radius;
 		} 
 		if ( birdShape.y < birdShape.radius ) {
 			velocity = 0;

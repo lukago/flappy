@@ -2,12 +2,10 @@ package com.flappy.game;
 
 import java.util.Random;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector2;
 
 /**
  * this class represents single Pipe 
@@ -26,16 +24,13 @@ public class Pipe {
 	private float startPos;
 	
 	private Random generator;
-	private Vector2 window;	
+	
 	
 	public Pipe() {
 		generator = new Random();
 		pipeTexture = new Texture("pipe.png");
 		
-		window = new Vector2();	
-		window.x = Gdx.graphics.getWidth();
-		window.y = Gdx.graphics.getHeight();
-		startPos = window.x;
+		startPos = Game.window.x;
 		
 		gapHeight = 120;
 		speed = 200;
@@ -51,7 +46,7 @@ public class Pipe {
 	}
 	
 	public float getRandHeight() {
-		return generator.nextFloat()*(window.x-20)+10;
+		return generator.nextFloat()*(Game.window.x-20)+10;
 	}
 	
 	public void setPipes() {
@@ -62,7 +57,7 @@ public class Pipe {
 		pipeLow.y = 0;
 		
 		pipeUp.width = pipeLow.width;
-		pipeUp.height = window.y - pipeLow.height - gapHeight;
+		pipeUp.height = Game.window.y - pipeLow.height - gapHeight;
 		pipeUp.x = startPos;
 		pipeUp.y = pipeLow.height + gapHeight;
 			
