@@ -9,7 +9,7 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFont
 
 public class Score {
 
-	/*
+	/**
 	 * FreeTypeFont is libGDX extension
 	 * allows to use .ttf fonts and flexible font size setting
 	 * glyphLayout is to get text width
@@ -19,7 +19,7 @@ public class Score {
 	private BitmapFont font;
 	private GlyphLayout glyphLayout;
 	
-	/*
+	/**
 	 * score representation variables
 	 * scoreFlags array is for checking if pipe is already 
 	 * crossed by bird. 
