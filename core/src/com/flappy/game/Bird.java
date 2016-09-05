@@ -21,11 +21,11 @@ public class Bird {
 		birdShape = new Circle();
 		birdShape.x = Game.window.x/4;
 		birdShape.y = Game.window.y/2;
-		birdShape.radius = 10;
+		birdShape.radius = 15;
 		
 		velocity = 0f;
 		gravity = -30f;
-		lift = 500f;
+		lift = 600f;
 		
 		birdTexture = new Texture("bird.png");	
 	}

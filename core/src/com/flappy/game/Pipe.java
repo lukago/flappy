@@ -32,7 +32,7 @@ public class Pipe {
 		
 		startPos = Game.window.x;
 		
-		gapHeight = 120;
+		gapHeight = 140;
 		speed = 200;
 		
 		pipeUpSprite = new Sprite();

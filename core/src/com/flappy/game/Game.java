@@ -41,7 +41,7 @@ public class Game extends ApplicationAdapter {
 		batch = new SpriteBatch();
 		bird = new Bird();
 		pipes = new PipeArray(2, 400);
-		score = new Score(40, 2);
+		score = new Score(65, 2);
 	}
 
 	@Override
