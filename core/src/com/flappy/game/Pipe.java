@@ -2,6 +2,7 @@ package com.flappy.game;
 
 import java.util.Random;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -28,7 +29,7 @@ public class Pipe {
 	
 	public Pipe() {
 		generator = new Random();
-		pipeTexture = new Texture("pipe.png");
+		pipeTexture = new Texture(Gdx.files.internal("pipe.png"));
 		
 		startPos = Game.window.x;
 		

@@ -79,7 +79,7 @@ public class Game extends ApplicationAdapter {
          * temporary behavior
          * TODO: menu / game over summary
          */
-        if ( collision.isbirdPipeCollision(bird, pipes.getPipes()) ) {
+        if ( collision.isbirdCollision(bird, pipes.getPipes()) ) {
         	this.create();
         }    
 	}
