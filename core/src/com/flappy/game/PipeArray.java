@@ -28,8 +28,7 @@ public class PipeArray {
 		}
 	}
 	
-	public void updatePipesArr(float dt) 
-	{
+	public void updatePipesArr(float dt) {
 		for(int i=0; i<pipes.length; i++) {
 			pipes[i].updatePipes(dt);
 		}
@@ -45,8 +44,7 @@ public class PipeArray {
         }
 	}
 	
-	public void drawPipesArr(SpriteBatch batch)
-	{
+	public void drawPipesArr(SpriteBatch batch) {
 		for(int i=0; i<pipes.length; i++) {
 			pipes[i].drawPipes(batch);
 		}

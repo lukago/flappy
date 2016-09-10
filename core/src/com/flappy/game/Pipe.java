@@ -14,6 +14,7 @@ import com.badlogic.gdx.math.Rectangle;
  */
 
 public class Pipe {
+	
 	private Sprite pipeUpSprite;
 	private Sprite pipeLowSprite;
 	private Texture pipeTexture;
@@ -25,7 +26,6 @@ public class Pipe {
 	private float startPos;
 	
 	private Random generator;
-	
 	
 	public Pipe() {
 		generator = new Random();
@@ -51,7 +51,6 @@ public class Pipe {
 	}
 	
 	public void setPipes() {
-			
 		pipeLow.width = 80;
 		pipeLow.height = getRandHeight();
 		pipeLow.x = startPos;
