@@ -42,17 +42,17 @@ public class Bird {
 		liftRotation = 50f;
 		fallRotation = 1.5f;
 		rotation = 0;
-        stateTime = 0;
+		stateTime = 0;
 		
 		// textures and animation variables initializaton 
-		birdSheet = new Texture(Gdx.files.internal("bird.png"));
+        birdSheet = new Texture(Gdx.files.internal("bird.png"));
 		birdFrames = new TextureRegion[FRAME_COLS * FRAME_ROWS];
 		
 		loadBirdFrames();
         
         // set each animation time here
-        flyAnimation = new Animation(0.1f, birdFrames);
-        currentFrame = flyAnimation.getKeyFrame(stateTime, true);
+		flyAnimation = new Animation(0.1f, birdFrames);
+		currentFrame = flyAnimation.getKeyFrame(stateTime, true);
 	}
 	
 	public void drawBird(SpriteBatch batch) {
