@@ -55,11 +55,19 @@ public class Bird {
         currentFrame = flyAnimation.getKeyFrame(stateTime, true);
 	}
 	
+	/**
+	 * Bird's render method
+	 * @param batch @see SpriteBatch
+	 */
 	public void drawBird(SpriteBatch batch) {
 		batch.draw(currentFrame, birdShape.x - birdShape.radius, birdShape.y - birdShape.radius, 
 				birdShape.radius, birdShape.radius, 2*birdShape.radius, 2*birdShape.radius, 1, 1, rotation);
 	}
 	
+	/**
+	 * Updates the bird logic
+	 * @param dt DeltaTime - Time span between the current frame and the last frame in seconds
+	 */
 	public void updateBird(float dt) {	
 		velocity += gravity;
 		birdShape.y += velocity*dt;
@@ -85,11 +93,17 @@ public class Bird {
 			}	
 	}
 	
+	/**
+	 * Called when bird gets removed
+	 */
 	public void disposeBird() {
 		birdSheet.dispose();
 	}
 	
-	// utility method used in constructor
+	
+	/**
+	 * Loads bird frames for the bird animation
+	 */
 	private void loadBirdFrames() {
 		// temporary array of arrays to use TextureRegion.split() method
 		TextureRegion[][] tmp = TextureRegion.split(birdSheet, birdSheet.getWidth()/FRAME_COLS, birdSheet.getHeight()/FRAME_ROWS);

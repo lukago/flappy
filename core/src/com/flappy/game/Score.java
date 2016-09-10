@@ -55,14 +55,26 @@ public class Score {
 		y = Game.window.y - 100;
 	}
 	
+	/**
+	 * Called when score gets removed
+	 */
 	public void disposeScore() {
 		generator.dispose();
 	}
 	
+	/**
+	 * Render score
+	 * @param batch @see SpriteBatch
+	 */
 	public void drawScore(SpriteBatch batch) {
 		font.draw(batch, glyphLayout, x - glyphLayout.width / 2, y);
 	}
 	
+	/**
+	 * Updates score
+	 * @param pipes Pipes to check the score with
+	 * @param bird Bird to check the score with
+	 */
 	public void updateScore(Pipe[] pipes, Bird bird) {	
 		// score increment checking
 		for (int i=0; i<pipes.length; i++) {

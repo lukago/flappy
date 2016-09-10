@@ -92,5 +92,3 @@ public class Game extends ApplicationAdapter {
 		score.disposeScore();
 	}
 }
-
-

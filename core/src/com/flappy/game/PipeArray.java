@@ -28,6 +28,10 @@ public class PipeArray {
 		}
 	}
 	
+	/**
+	 * Updates pipes
+	 * @param dt DeltaTime
+	 */
 	public void updatePipesArr(float dt) 
 	{
 		for(int i=0; i<pipes.length; i++) {
@@ -45,6 +49,10 @@ public class PipeArray {
         }
 	}
 	
+	/**
+	 * Render pipes
+	 * @param batch @see SpriteBatch
+	 */
 	public void drawPipesArr(SpriteBatch batch)
 	{
 		for(int i=0; i<pipes.length; i++) {
@@ -52,6 +60,9 @@ public class PipeArray {
 		}
 	}
 	
+	/**
+	 * Called when pipes get removed
+	 */
 	public void disposePipesArr() {
 		for(int i=0; i<pipes.length; i++) {
 			pipes[i].disposePipes();

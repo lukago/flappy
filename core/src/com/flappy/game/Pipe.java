@@ -46,10 +46,17 @@ public class Pipe {
 		setPipes();
 	}
 	
+	/**
+	 * Get random height value
+	 * @return float Random height
+	 */
 	public float getRandHeight() {
 		return generator.nextFloat()*(Game.window.x-20)+10;
 	}
 	
+	/**
+	 * Set up pipes
+	 */
 	public void setPipes() {
 			
 		pipeLow.width = 80;
@@ -66,6 +73,10 @@ public class Pipe {
 		pipeUpSprite.setBounds(pipeUp.x, pipeUp.y, pipeUp.width, pipeUp.height);
 	}
 	
+	/**
+	 * Update pipes
+	 * @param deltaTimeSeconds - DeltaTime
+	 */
 	public void updatePipes(float deltaTimeSeconds) {
 		pipeLow.x -= speed*deltaTimeSeconds;
 		pipeUp.x = pipeLow.x;
@@ -73,11 +84,18 @@ public class Pipe {
 		pipeUpSprite.setPosition(pipeUp.x, pipeUp.y);
 	}
 	
-	public void drawPipes(SpriteBatch sprbatch) {
-		pipeLowSprite.draw(sprbatch);
-		pipeUpSprite.draw(sprbatch);
+	/**
+	 * Render pipes
+	 * @param batch @see SpriteBatch
+	 */
+	public void drawPipes(SpriteBatch batch) {
+		pipeLowSprite.draw(batch);
+		pipeUpSprite.draw(batch);
 	}
 	
+	/**
+	 * Called when the pipes get removed
+	 */
 	public void disposePipes() {
 		pipeTexture.dispose();
 	}
