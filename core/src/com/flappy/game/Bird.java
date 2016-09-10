@@ -45,12 +45,12 @@ public class Bird {
 		stateTime = 0;
 		
 		// textures and animation variables initializaton 
-        birdSheet = new Texture(Gdx.files.internal("bird.png"));
+		birdSheet = new Texture(Gdx.files.internal("bird.png"));
 		birdFrames = new TextureRegion[FRAME_COLS * FRAME_ROWS];
 		
 		loadBirdFrames();
         
-        // set each animation time here
+		// set each animation time here
 		flyAnimation = new Animation(0.1f, birdFrames);
 		currentFrame = flyAnimation.getKeyFrame(stateTime, true);
 	}
