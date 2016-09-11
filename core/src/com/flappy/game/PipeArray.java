@@ -3,18 +3,21 @@ package com.flappy.game;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 /**
- * this class handle array of Pipe class 
- * array is used to draw more than one pipe on the screen
- * also handles game screen crossing 
+ * This class handle array of Pipe objects.
+ * This is used to draw more than one pipe on the screen.
+ * Also handles game screen crossing.
+ * @see Pipe
  */
 
 public class PipeArray {
-	// array of pipes
 	private Pipe[] pipes;
-
-	// distance between two pipes
 	private int distance;
 	
+	/**
+	 * Class constructor
+	 * @param numOfPipes how many pipes put into an array
+	 * @param distance distance between two pipes
+	 */
 	public PipeArray(int numOfPipes, int distance) {
 		this.distance = distance;
 		
@@ -28,14 +31,21 @@ public class PipeArray {
 		}
 	}
 	
-	public void updatePipesArr(float dt) {
+	/**
+	 * Upadtes all pipes. 
+	 * @param dt delta time since previous update
+	 */
+	public void updatePipesArr(float dt) 
+	{
 		for(int i=0; i<pipes.length; i++) {
 			pipes[i].updatePipes(dt);
 		}
         
-        // pipes crossing game window border handling
-		// it depends on previous member of an array
-		// allows to get equal distance between members
+        /*
+         * pipes crossing game window border handling
+         * it depends on previous member of an array
+         * allows to get equal distance between members
+         */
         for(int i=0; i<pipes.length; i++) {
         	if (pipes[i].getPipeLow().x < -pipes[i].getPipeLow().width ) {
         		pipes[i].setPipes();
@@ -44,19 +54,33 @@ public class PipeArray {
         }
 	}
 	
-	public void drawPipesArr(SpriteBatch batch) {
+	/**
+	 * Drawing all pipes of an array on the screen. 
+	 * @param batch pass here batch of main render method
+     * @see SpriteBatch
+	 */
+	public void drawPipesArr(SpriteBatch batch)
+	{
 		for(int i=0; i<pipes.length; i++) {
 			pipes[i].drawPipes(batch);
 		}
 	}
 	
+	/**
+	 * Called when PipesArray gets removed.
+	 */
 	public void disposePipesArr() {
 		for(int i=0; i<pipes.length; i++) {
 			pipes[i].disposePipes();
 		}		
 	}
 	
-	// utility method
+	/**
+	 * utility method calculating floor mod
+	 * @param num number
+	 * @param mod modulo
+	 * @return integer floor mod form num%mod
+	 */
 	private int myFloorMod(int num, int mod) {
 		return ( ( num%mod ) + mod )%mod;
 	}
