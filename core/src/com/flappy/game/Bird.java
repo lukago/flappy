@@ -27,8 +27,8 @@ public class Bird {
 	private TextureRegion[] birdFrames;
 	private TextureRegion currentFrame;
 	
-	float stateTime;
-	float rotation;
+	private float stateTime;
+	private float rotation;
 	
 	public Bird() {
 		birdShape = new Circle();
@@ -36,13 +36,13 @@ public class Bird {
 		birdShape.y = Game.window.y/2;
 		birdShape.radius = 14;
 		
-		velocity 		= 0f;
-		gravity 		= -30f;
-		lift 			= 600f;
-		liftRotation 	= 50f;
-		fallRotation 	= 1.5f;
-		rotation 		= 0;
-        stateTime 		= 0;
+		velocity = 0f;
+		gravity = -30f;
+		lift = 600f;
+		liftRotation = 50f;
+		fallRotation = 1.5f;
+		rotation = 0;
+		stateTime = 0;
 		
 		// textures and animation variables initializaton 
 		birdSheet = new Texture(Gdx.files.internal("bird.png"));
@@ -50,9 +50,9 @@ public class Bird {
 		
 		loadBirdFrames();
         
-        // set each animation time here
-        flyAnimation = new Animation(0.1f, birdFrames);
-        currentFrame = flyAnimation.getKeyFrame(stateTime, true);
+		// set each animation time here
+		flyAnimation = new Animation(0.1f, birdFrames);
+		currentFrame = flyAnimation.getKeyFrame(stateTime, true);
 	}
 	
 	public void drawBird(SpriteBatch batch) {
@@ -80,9 +80,9 @@ public class Bird {
 		
 		// input handling 
 		if( Gdx.input.justTouched() ) {
-				rotation = liftRotation;
-				velocity = lift;			
-			}	
+			rotation = liftRotation;
+			velocity = lift;			
+		}	
 	}
 	
 	public void disposeBird() {
@@ -106,6 +106,4 @@ public class Bird {
 	 public Circle getBirdShape() {
 		return birdShape;
 	}
-
 }
-

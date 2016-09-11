@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 
-
 /**
  * Flappy Bird game clone 
  * @author https://github.com/glbwsk
@@ -92,5 +91,3 @@ public class Game extends ApplicationAdapter {
 		score.disposeScore();
 	}
 }
-
-
