@@ -21,13 +21,11 @@ public class Pipe {
 
     private int gapHeight;
     private int speed;
+    private int pipeAnimSpeed;
     private float startPos;
 
     private Random generator;
 
-    /**
-     * Class constructor.
-     */
     public Pipe() {
         generator = new Random();
         pipeTexture = new Texture(Gdx.files.internal("pipe.png"));
@@ -47,7 +45,7 @@ public class Pipe {
      * @return float random pipe height 
      */
     public float getRandHeight() {
-        return generator.nextFloat() * (Game.window.x - 20) + 10;
+        return generator.nextFloat() * (Game.window.y - 400) + 200;
     }
     
     /**
@@ -56,8 +54,9 @@ public class Pipe {
      */
     public void setPipes() {
         startPos = Game.window.x + 200;
-        gapHeight = 140;
-        speed = 250;
+        gapHeight = 180;
+        speed = 200;
+        pipeAnimSpeed = 1000;
         
         pipeLow.width = 80;
         pipeLow.height = getRandHeight();
@@ -80,6 +79,9 @@ public class Pipe {
     public void updatePipes(float dt) {
         pipeLow.x -= speed * dt;
         pipeUp.x = pipeLow.x;
+        
+        pipeAnim(dt);
+        
         pipeLowSprite.setPosition(pipeLow.x, pipeLow.y);
         pipeUpSprite.setPosition(pipeUp.x, pipeUp.y);
     }
@@ -92,6 +94,36 @@ public class Pipe {
     public void drawPipes(SpriteBatch batch) {
         pipeLowSprite.draw(batch);
         pipeUpSprite.draw(batch);
+    }
+    
+    /**
+     * Updates pipes animation.
+     * @param dt delta time since previous update
+     */
+    public void pipeAnim(float dt) {
+        if (pipeLow.x >= Game.window.x && pipeLow.y == 0) {
+            pipeLow.y -= pipeLow.height;
+        }
+        
+        if (pipeUp.x >= Game.window.x && pipeUp.y == pipeLow.height + gapHeight) {
+            pipeUp.y += pipeUp.height;
+        }   
+        
+        if (pipeLow.y < 0 && pipeLow.x < Game.window.x - pipeLow.width ) {
+            pipeLow.y += pipeAnimSpeed * dt;
+        }
+        
+        if (pipeLow.y > 0) {
+            pipeLow.y = 0;
+        }
+        
+        if (pipeUp.y > pipeLow.height + gapHeight && pipeUp.x < Game.window.x - pipeLow.width ) {
+            pipeUp.y -= pipeAnimSpeed * dt;
+        }
+        
+        if (pipeUp.y < pipeLow.height + gapHeight) {
+            pipeUp.y = pipeLow.height + gapHeight;
+        }
     }
 
     /**

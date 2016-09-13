@@ -1,6 +1,7 @@
 package com.flappy.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -40,13 +41,14 @@ public class Score {
      * @param numOfPipes pass here how many pipes are in Pipes array.
      */
     public Score(int fontSize, int numOfPipes) {
-        generator = new FreeTypeFontGenerator(Gdx.files.internal("dlacruz.ttf"));
+        generator = new FreeTypeFontGenerator(Gdx.files.internal("college.otf"));
         parameter = new FreeTypeFontParameter();
 
         // set font size (pixels) here
         parameter.size = fontSize;
 
         font = generator.generateFont(parameter);
+        font.setColor(Color.CYAN);
         score = 0;
         scoreStr = new String();
         scoreStr = Integer.toString(score);

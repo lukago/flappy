@@ -17,7 +17,7 @@ public class Collision {
                 return true;
         }
 
-        if (bird.getBirdShape().y < bird.getBirdShape().radius) {
+        if (bird.getBirdShape().y < 0 ) {
             return true;
         }
 

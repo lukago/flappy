@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Circle;
 
 /**
- * Bird logic, animation, update and render class. 
+ * Bird logic, animation, update and render class.
  */
 
 public class Bird {
@@ -22,7 +22,9 @@ public class Bird {
     private float lift;
     private float liftRotation;
     private float fallRotation;
-
+    float rotation;
+    float stateTime;
+ 
     // animations
     private static final int FRAME_COLS = 3;
     private static final int FRAME_ROWS = 1;
@@ -31,25 +33,28 @@ public class Bird {
     private TextureRegion[] birdFrames;
     private TextureRegion currentFrame;
 
-    float stateTime;
-    float rotation;
-
     /**
-     * Class constructor.
+     * Class constructor
+     * @param birdImgSrc path to bird texture
+     * @param gravity strenght of gravity
+     * @param lift strength of lift
+     * @param liftRotation rotation after lift
+     * @param fallRotation rotation per update
      */
-    public Bird() {
+    public Bird(String birdImgSrc, float gravity, float lift, float liftRotation, float fallRotation) {
         birdShape = new Circle();
         birdShape.x = Game.window.x / 4;
         birdShape.y = Game.window.y / 2;
         birdShape.radius = 14;
-
-        velocity        = 0f;
-        gravity         = -30f;
-        lift            = 600f;
-        liftRotation    = 50f;
-        fallRotation    = 1.5f;
-        rotation        = 0;
-        stateTime       = 0;
+      
+        this.gravity = -gravity;
+        this.lift = lift;
+        this.liftRotation = liftRotation;
+        this.fallRotation = fallRotation;
+        
+        velocity = 0f;
+        rotation = 0f;
+        stateTime = 0f;
 
         // textures and animation variables initializaton
         birdSheet = new Texture(Gdx.files.internal("bird.png"));
@@ -62,9 +67,15 @@ public class Bird {
         currentFrame = flyAnimation.getKeyFrame(stateTime, true);
     }
 
+    public Bird() {
+        this("bird.png", 30f, 700f, 50f, 1.5f);
+    }
+
     /**
      * Draws bird on the screen.
-     * @param batch pass here batch of main render method
+     * 
+     * @param batch
+     *            pass here batch of main render method
      * @see SpriteBatch
      */
     public void drawBird(SpriteBatch batch) {
@@ -73,8 +84,10 @@ public class Bird {
     }
 
     /**
-     * Updates bird data. 
-     * @param dt delta time since previous update
+     * Updates bird data.
+     * 
+     * @param dt
+     *            delta time since previous update
      */
     public void updateBird(float dt) {
         velocity += gravity;
@@ -93,14 +106,18 @@ public class Bird {
             velocity = 0;
             birdShape.y = Game.window.y - 2 * birdShape.radius;
         }
+    }
 
-        // input handling
+    /**
+     * Input handling.
+     */
+    public void handleBirdInput() {
         if (Gdx.input.justTouched()) {
             rotation = liftRotation;
             velocity = lift;
         }
     }
-    
+
     /**
      * Called when Bird object gets removed.
      */
@@ -125,9 +142,17 @@ public class Bird {
         }
     }
 
-    //setters & getters
+    // setters & getters
     public Circle getBirdShape() {
         return birdShape;
+    }
+
+    public void setRotation(float rotation) {
+        this.rotation = rotation;
+    }
+
+    public void setVelocity(float velocity) {
+        this.velocity = velocity;
     }
 
 }
