@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Rectangle;
@@ -18,7 +19,8 @@ import com.badlogic.gdx.math.Rectangle;
 public class Pipe {
     private Sprite pipeUpSprite;
     private Sprite pipeLowSprite;
-    private Texture pipeTexture;
+    private TextureRegion pipeTextureReg;
+    private Texture pipeSheet;
     private Rectangle pipeUp;
     private Rectangle pipeLow;
     private ShapeRenderer borderRenderer;
@@ -32,12 +34,14 @@ public class Pipe {
 
     public Pipe() {
         generator = new Random();
-        pipeTexture = new Texture(Gdx.files.internal("pipe.png"));
+        pipeSheet = new Texture(Gdx.files.internal("pipes.jpg"));
+        pipeSheet.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
 
         pipeUpSprite = new Sprite();
         pipeLowSprite = new Sprite();
-        pipeUpSprite.setTexture(pipeTexture);
-        pipeLowSprite.setTexture(pipeTexture);
+        pipeTextureReg = new TextureRegion(pipeSheet);
+        pipeUpSprite.setRegion(pipeTextureReg);
+        pipeLowSprite.setRegion(pipeTextureReg);
 
         pipeUp = new Rectangle();
         pipeLow = new Rectangle();
@@ -45,7 +49,7 @@ public class Pipe {
         
         borderRenderer = new ShapeRenderer();
         Gdx.gl20.glLineWidth(5);
-        borderRenderer.setColor(Color.BLACK);    
+        borderRenderer.setColor(Color.BLACK);           
     }
     
     /**
@@ -75,9 +79,14 @@ public class Pipe {
         pipeUp.height = Game.window.y - pipeLow.height - gapHeight;
         pipeUp.x = startPos;
         pipeUp.y = pipeLow.height + gapHeight;
+        
+        pipeTextureReg.setRegion(0, 0, (int) pipeLow.width, (int) pipeLow.height);
+        pipeLowSprite.setRegion(pipeTextureReg);
+        pipeTextureReg.setRegion(0, 0, (int) pipeUp.width, (int) pipeUp.height);
+        pipeUpSprite.setRegion(pipeTextureReg);
 
         pipeLowSprite.setBounds(pipeLow.x, pipeLow.y, pipeLow.width, pipeLow.height);
-        pipeUpSprite.setBounds(pipeUp.x, pipeUp.y, pipeUp.width, pipeUp.height);
+        pipeUpSprite.setBounds(pipeUp.x, pipeUp.y, pipeUp.width, pipeUp.height);  
     }
 
     /**
@@ -99,9 +108,9 @@ public class Pipe {
      * @param batch pass here batch of main render method
      * @see SpriteBatch
      */
-    public void drawPipes(SpriteBatch batch) {
-        pipeLowSprite.draw(batch);
-        pipeUpSprite.draw(batch);
+    public void drawPipes(SpriteBatch batch) {     
+        pipeLowSprite.draw(batch); 
+        pipeUpSprite.draw(batch); 
         drawBorders(batch);  
     }
     
@@ -154,7 +163,7 @@ public class Pipe {
      * Called when Pipe object get removed.
      */
     public void disposePipes() {
-        pipeTexture.dispose();
+        pipeSheet.dispose();
     }
 
     // setters & getters
