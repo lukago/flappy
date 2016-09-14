@@ -28,25 +28,24 @@ public class Game extends ApplicationAdapter {
     static Vector2 window;
 
     // array of pipes
-    private PipeArray pipes;
+    private PipeArray pipesArr;
 
     // variables for time handling
     static final float DT = 1 / 30.0f;
     
     @Override
     public void create() {
+        state = 1;
         window = new Vector2();
         window.x = Gdx.graphics.getWidth();
         window.y = Gdx.graphics.getHeight();
-
-        collision = new Collision();
-        batch = new SpriteBatch();
-        bird = new Bird("bird.png", 30f, 700f, 50f, 1.5f);
-        pipes = new PipeArray(2, 400);
-        score = new Score(65, 2);   
-        background = new Background("bg.jpg", 140);
         
-        state = 1;
+        batch       = new SpriteBatch();
+        pipesArr    = new PipeArray(2, 400);    
+        bird        = new Bird("bird.png", 30f, 700f, 50f, 1.5f);
+        collision   = new Collision(pipesArr.getPipes());
+        score       = new Score(pipesArr.getPipes(), 65);   
+        background  = new Background("bg.jpg", 140);         
     }
     
     @Override
@@ -108,46 +107,34 @@ public class Game extends ApplicationAdapter {
     public void dispose() {
         batch.dispose();
         bird.disposeBird();
-        pipes.disposePipesArr();
+        pipesArr.disposePipesArr();
         score.disposeScore();
     }
 
-    /* 
-     * ##############################
-     *         RUNNING STATE 
-     * ##############################
-     */
-    
     public void updateRunning(float dt) {
         background.updateBg(dt);
         bird.updateBird(dt);
         bird.handleBirdInput();
-        pipes.updatePipesArr(dt);
-        score.updateScore(pipes.getPipes(), bird);
+        pipesArr.updatePipesArr(dt);
+        score.updateScore(bird, pipesArr.getPipes());
         
-        //TODO: 
-        if (collision.isbirdCollision(bird, pipes.getPipes())) {
+        if (collision.isbirdCollision(bird, pipesArr.getPipes())) {
+            bird.setVelocity(0);
             state = GAME_OVER;
         }
     }
     
     public void presentRunning(SpriteBatch bath) {
         background.drawBg(bath);
-        pipes.drawPipesArr(batch);
+        pipesArr.drawPipesArr(batch);
         bird.drawBird(batch);
         score.drawScore(batch);
     }
     
-    
-    /* 
-     * ##############################
-     *        GAMEOVER STATE 
-     * ##############################
-     */
-    
     public void updateGameOver(float dt) {
-        bird.updateBird(dt);
-        if (bird.getBirdShape().y < 0 ) {
+        bird.updateBird(dt);       
+        //TODO: menu
+        if (bird.getBirdShape().y < -2*bird.getBirdShape().radius ) {
             this.create();
             state = GAME_RUNNING;
         }
@@ -155,16 +142,9 @@ public class Game extends ApplicationAdapter {
     
     public void presentGameOver(SpriteBatch batch) {
         background.drawBg(batch);
-        pipes.drawPipesArr(batch);
+        pipesArr.drawPipesArr(batch);
         bird.drawBird(batch);
     }
-    
-    
-    /* 
-     * ##############################
-     *          READY STATE 
-     * ##############################
-     */
     
     public void updateReady(float dt) {
         bird.updateBird(dt);
@@ -172,8 +152,7 @@ public class Game extends ApplicationAdapter {
     
     public void presentReady(SpriteBatch batch) {
         bird.drawBird(batch);
-        pipes.drawPipesArr(batch);
+        pipesArr.drawPipesArr(batch);
     }
-    
-    
+      
 }

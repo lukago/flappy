@@ -24,7 +24,7 @@ public class Bird {
     private float fallRotation;
     float rotation;
     float stateTime;
- 
+
     // animations
     private static final int FRAME_COLS = 3;
     private static final int FRAME_ROWS = 1;
@@ -34,7 +34,7 @@ public class Bird {
     private TextureRegion currentFrame;
 
     /**
-     * Class constructor
+     * Class constructor 
      * @param birdImgSrc path to bird texture
      * @param gravity strenght of gravity
      * @param lift strength of lift
@@ -45,19 +45,19 @@ public class Bird {
         birdShape = new Circle();
         birdShape.x = Game.window.x / 4;
         birdShape.y = Game.window.y / 2;
-        birdShape.radius = 14;
-      
+        birdShape.radius = 25;
+
         this.gravity = -gravity;
         this.lift = lift;
         this.liftRotation = liftRotation;
         this.fallRotation = fallRotation;
-        
+
         velocity = 0f;
         rotation = 0f;
         stateTime = 0f;
 
         // textures and animation variables initializaton
-        birdSheet = new Texture(Gdx.files.internal("bird.png"));
+        birdSheet = new Texture(Gdx.files.internal(birdImgSrc));
         birdFrames = new TextureRegion[FRAME_COLS * FRAME_ROWS];
 
         loadBirdFrames();
@@ -73,9 +73,7 @@ public class Bird {
 
     /**
      * Draws bird on the screen.
-     * 
-     * @param batch
-     *            pass here batch of main render method
+     * @param batch pass here batch of main render method
      * @see SpriteBatch
      */
     public void drawBird(SpriteBatch batch) {
@@ -85,9 +83,7 @@ public class Bird {
 
     /**
      * Updates bird data.
-     * 
-     * @param dt
-     *            delta time since previous update
+     * @param dt delta time since previous update
      */
     public void updateBird(float dt) {
         velocity += gravity;
@@ -102,9 +98,9 @@ public class Bird {
         currentFrame = flyAnimation.getKeyFrame(stateTime, true);
 
         // crossing game window handling
-        if (birdShape.y > Game.window.y - 2 * birdShape.radius) {
+        if (birdShape.y > Game.window.y - birdShape.radius) {
             velocity = 0;
-            birdShape.y = Game.window.y - 2 * birdShape.radius;
+            birdShape.y = Game.window.y - birdShape.radius;
         }
     }
 

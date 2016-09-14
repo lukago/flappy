@@ -20,11 +20,7 @@ public class PipeArray {
 	 */
 	public PipeArray(int numOfPipes, int distance) {
 		this.distance = distance;
-		
-		// pipes array size initialize
 		pipes = new Pipe[numOfPipes];
-		
-		// for each pipe initialization
 		for (int i=0; i < pipes.length; i++) {
 			pipes[i] = new Pipe();
 			pipes[i].setXPos(pipes[i].getPipeLow().x + i*distance);
@@ -43,8 +39,7 @@ public class PipeArray {
         
         /*
          * pipes crossing game window border handling
-         * it depends on previous member of an array
-         * allows to get equal distance between members
+         * gets equal distance between members
          */
         for(int i=0; i<pipes.length; i++) {
         	if (pipes[i].getPipeLow().x < -pipes[i].getPipeLow().width ) {

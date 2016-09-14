@@ -2,9 +2,12 @@ package com.flappy.game;
 
 import java.util.Random;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Rectangle;
 
 /**
@@ -18,6 +21,7 @@ public class Pipe {
     private Texture pipeTexture;
     private Rectangle pipeUp;
     private Rectangle pipeLow;
+    private ShapeRenderer borderRenderer;
 
     private int gapHeight;
     private int speed;
@@ -38,6 +42,10 @@ public class Pipe {
         pipeUp = new Rectangle();
         pipeLow = new Rectangle();
         setPipes();
+        
+        borderRenderer = new ShapeRenderer();
+        Gdx.gl20.glLineWidth(5);
+        borderRenderer.setColor(Color.BLACK);    
     }
     
     /**
@@ -45,7 +53,7 @@ public class Pipe {
      * @return float random pipe height 
      */
     public float getRandHeight() {
-        return generator.nextFloat() * (Game.window.y - 400) + 200;
+        return generator.nextFloat() * (Game.window.y - (gapHeight+200)) + 100;
     }
     
     /**
@@ -54,11 +62,11 @@ public class Pipe {
      */
     public void setPipes() {
         startPos = Game.window.x + 200;
-        gapHeight = 180;
+        gapHeight = 200;
         speed = 200;
         pipeAnimSpeed = 1000;
         
-        pipeLow.width = 80;
+        pipeLow.width = 100;
         pipeLow.height = getRandHeight();
         pipeLow.x = startPos;
         pipeLow.y = 0;
@@ -94,6 +102,21 @@ public class Pipe {
     public void drawPipes(SpriteBatch batch) {
         pipeLowSprite.draw(batch);
         pipeUpSprite.draw(batch);
+        drawBorders(batch);  
+    }
+    
+    /**
+     * Draws black borders of pipes
+     * @param batch pass here batch of main render method
+     * @see SpriteBatch
+     */
+    public void drawBorders(SpriteBatch batch) { 
+        batch.end();
+        borderRenderer.begin(ShapeType.Line);      
+        borderRenderer.rect(pipeLow.x, pipeLow.y-10, pipeLow.width, pipeLow.height+10);
+        borderRenderer.rect(pipeUp.x, pipeUp.y, pipeUp.width, pipeUp.height+10);
+        borderRenderer.end();
+        batch.begin();
     }
     
     /**
@@ -101,6 +124,7 @@ public class Pipe {
      * @param dt delta time since previous update
      */
     public void pipeAnim(float dt) {
+        //TODO: optymize 
         if (pipeLow.x >= Game.window.x && pipeLow.y == 0) {
             pipeLow.y -= pipeLow.height;
         }
@@ -109,7 +133,7 @@ public class Pipe {
             pipeUp.y += pipeUp.height;
         }   
         
-        if (pipeLow.y < 0 && pipeLow.x < Game.window.x - pipeLow.width ) {
+        if (pipeLow.y < 0 && pipeLow.x < Game.window.x ) {
             pipeLow.y += pipeAnimSpeed * dt;
         }
         
@@ -117,7 +141,7 @@ public class Pipe {
             pipeLow.y = 0;
         }
         
-        if (pipeUp.y > pipeLow.height + gapHeight && pipeUp.x < Game.window.x - pipeLow.width ) {
+        if (pipeUp.y > pipeLow.height + gapHeight && pipeUp.x < Game.window.x ) {
             pipeUp.y -= pipeAnimSpeed * dt;
         }
         
