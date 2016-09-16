@@ -1,6 +1,7 @@
 package com.flappy.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -32,6 +33,9 @@ public class Bird {
     private Texture birdSheet;
     private TextureRegion[] birdFrames;
     private TextureRegion currentFrame;
+    
+    /* sounds */
+    private Sound birdUpSound;
 
     /**
      * Class constructor 
@@ -56,15 +60,15 @@ public class Bird {
         rotation = 0f;
         stateTime = 0f;
 
-        /* textures and animation variables initializaton */
         birdSheet = new Texture(Gdx.files.internal(birdImgSrc));
         birdFrames = new TextureRegion[FRAME_COLS * FRAME_ROWS];
-
-        loadBirdFrames();
+        birdUpSound =  Gdx.audio.newSound(Gdx.files.internal("sounds/wing.ogg"));
 
         /* set each animation time here */
+        loadBirdFrames();
         flyAnimation = new Animation(0.1f, birdFrames);
         currentFrame = flyAnimation.getKeyFrame(stateTime, true);
+        
     }
 
     public Bird() {
@@ -109,8 +113,7 @@ public class Bird {
      */
     public void handleBirdInput() {
         if (Gdx.input.justTouched()) {
-            rotation = liftRotation;
-            velocity = lift;
+            birdUp();
         }
     }
 
@@ -119,6 +122,18 @@ public class Bird {
      */
     public void disposeBird() {
         birdSheet.dispose();
+        birdUpSound.dispose();
+    }
+    
+    /*
+     * Called when starting new game.
+     */
+    public void resetBird() {
+        birdShape.x = FlappyGame.window.x / 4;
+        birdShape.y = FlappyGame.window.y / 2;
+        velocity = 0f;
+        rotation = 0f;
+        stateTime = 0f;
     }
 
     /**
@@ -136,6 +151,23 @@ public class Bird {
                 birdFrames[index++] = tmp[i][j];
             }
         }
+    }
+    
+    /*
+     * bird jump default handling
+     */
+    public void birdUp() {
+        birdUpSound.play(1.0f);
+        rotation = liftRotation;
+        velocity = lift;
+    }
+    
+    /*
+     * bird jump different behaviour
+     */
+    public void birdUp(float rotation, float lift) {
+        this.rotation = rotation;
+        this.velocity = lift;
     }
 
     /* setters & getters */

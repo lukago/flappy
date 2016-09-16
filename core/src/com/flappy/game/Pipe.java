@@ -32,9 +32,20 @@ public class Pipe {
 
     private Random generator;
 
-    public Pipe() {
+    /**
+     * Pipe class constructor.
+     * @param gapHeight height of gap between pipes pair
+     * @param speed speed of pipes
+     * @param pipeAnimSpeed speed of pipe animation
+     */
+    public Pipe(int gapHeight, int speed, int pipeAnimSpeed) {  
+        this.gapHeight = gapHeight;
+        this.speed = speed;
+        this.pipeAnimSpeed = pipeAnimSpeed;
+        startPos = FlappyGame.window.x + 200;
+        
         generator = new Random();
-        pipeSheet = new Texture(Gdx.files.internal("pipes.jpg"));
+        pipeSheet = new Texture(Gdx.files.internal("textures/pipes.png"));
         pipeSheet.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
 
         pipeUpSprite = new Sprite();
@@ -52,6 +63,10 @@ public class Pipe {
         borderRenderer.setColor(Color.BLACK);           
     }
     
+    public Pipe() {
+        this(200, 200, 1000);
+    }
+    
     /**
      * Gets random pipe height value.
      * @return float random pipe height 
@@ -64,12 +79,7 @@ public class Pipe {
      * Sets up pipes data. It does not include 
      * loading textures or creating new objects.
      */
-    public void setPipes() {
-        startPos = FlappyGame.window.x + 200;
-        gapHeight = 200;
-        speed = 200;
-        pipeAnimSpeed = 1000;
-        
+    public void setPipes() {    
         pipeLow.width = 100;
         pipeLow.height = getRandHeight();
         pipeLow.x = startPos;

@@ -1,21 +1,20 @@
 package com.flappy.game;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
-
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.GdxRuntimeException;
 
 /**
  * Score drawing, updating and handling.
  */
 
 public class Score {
-    final String SCORE_FILE_PATH = "score";
+    final String SCORE_FILE_PATH = "data/score";
+    final String FONT_FILE_PATH = "fonts/college.otf";
+    final String SOUND_FILE_PATH = "sounds/point.ogg";
     
     private Text text;
     private int score;
@@ -23,6 +22,7 @@ public class Score {
     private Collision collision;
     private Vector2 position;
     private boolean newBestScore;
+    private Sound pointSound;
 
     /**
      * Class constructor
@@ -35,8 +35,8 @@ public class Score {
         score = 0;
         bestScore = 0;
         newBestScore = false;
-        text = new Text("college.otf", fontSize, 5, Integer.toString(score), position.x, position.y);
-        readBestScore();
+        text = new Text(FONT_FILE_PATH, fontSize, 5, Integer.toString(score), position.x, position.y);
+        pointSound =  Gdx.audio.newSound(Gdx.files.internal(SOUND_FILE_PATH));
     }
 
     /**
@@ -55,6 +55,7 @@ public class Score {
      */
     public void updateScore(Bird bird, Pipe[] pipes) {    
         if (collision.isPipeCrossed(bird, pipes)) {
+            pointSound.play(1.0f);
             score++;
             text.setText(Integer.toString(score));
         }       
@@ -65,35 +66,23 @@ public class Score {
      */
     public void disposeScore() {
         text.disposeText();
+        pointSound.dispose();
     }
     
     /**
      * Reads bestScore from file.
      */
     public void readBestScore() {
-        BufferedReader inputStream = null;
-        
+        FileHandle file = Gdx.files.local(SCORE_FILE_PATH);
         try {
-            inputStream = new BufferedReader(new FileReader(SCORE_FILE_PATH));
-            String text;
-
-            if ((text = inputStream.readLine()) != null) {
-                bestScore = Integer.parseInt(text);
-            }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            String str = file.readString();
+            bestScore = Integer.parseInt(str);
+        } catch (GdxRuntimeException e) {
+            bestScore = 0;
+            e.getStackTrace();
         } catch (NumberFormatException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            if (inputStream != null) {
-                try {
-                    inputStream.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+            bestScore = 0;
+            e.getStackTrace();
         }
     }
     
@@ -101,23 +90,22 @@ public class Score {
      * Sets bestScore and saves it to file.
      */
     public void setBestScore() {
-        PrintWriter outputStream = null;
-        
-        try {
-            outputStream = new PrintWriter(new FileWriter(SCORE_FILE_PATH));
-
-            if (score > bestScore) {
-                newBestScore = true;
-                bestScore = score;
-                outputStream.println(bestScore);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            if (outputStream != null) {
-                outputStream.close();
-            }
+        readBestScore();
+        FileHandle file = Gdx.files.local(SCORE_FILE_PATH);
+        if (score > bestScore) {
+            newBestScore = true;
+            bestScore = score;  
         }
+        try {
+            file.writeString(Integer.toString(bestScore), false);  
+        } catch (GdxRuntimeException e) {
+            e.getStackTrace();
+        }
+    }
+    
+    public void resetScore() {
+        score = 0;
+        text.setText(Integer.toString(score));
     }
     
     /* setters & getters */

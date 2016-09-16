@@ -4,8 +4,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 /**
  * This class handle array of Pipe objects.
- * This is used to draw more than one pipe on the screen.
- * Also handles game screen crossing.
  * @see Pipe
  */
 
@@ -22,7 +20,7 @@ public class PipeArray {
 		this.distance = distance;
 		pipes = new Pipe[numOfPipes];
 		for (int i=0; i < pipes.length; i++) {
-			pipes[i] = new Pipe();
+		    pipes[i] = new Pipe();
 			pipes[i].setXPos(pipes[i].getPipeLow().x + i*distance);
 		}
 	}
@@ -68,6 +66,16 @@ public class PipeArray {
 		for(int i=0; i<pipes.length; i++) {
 			pipes[i].disposePipes();
 		}		
+	}
+	
+    /*
+     * Called when starting new game.
+     */
+	public void resetPipesArr() {
+	    for (int i=0; i < pipes.length; i++) {
+	        pipes[i].setPipes();
+            pipes[i].setXPos(pipes[i].getPipeLow().x + i*distance);
+        }
 	}
 	
 	/**

@@ -13,18 +13,23 @@ import com.badlogic.gdx.math.Vector2;
  */
 
 public class FlappyGame extends ApplicationAdapter {
-    static final int GAME_READY = 0;
-    static final int GAME_RUNNING = 1;
-    static final int GAME_OVER = 2;
-    private int state;
+    
+    public enum GameState {
+        GAME_READY,
+        GAME_RUNNING,
+        GAME_OVER
+    }
+    
+    private GameState state;
+    private GameReady gameReady;
+    private GameOver gameOver;
+    
     private int numOfPipes;
-
     private SpriteBatch batch;
     private Bird bird;
     private Collision collision;
     private Score score;
     private Background background;
-    private GameOver gameOver;
     
     /* game window size */
     static Vector2 window;
@@ -37,31 +42,20 @@ public class FlappyGame extends ApplicationAdapter {
     
     @Override
     public void create() {
-        state = 1;
+        numOfPipes = 2;
+        state = GameState.GAME_READY;
         window = new Vector2();
         window.x = Gdx.graphics.getWidth();
         window.y = Gdx.graphics.getHeight();
         
-        /*
-         * create more pipes on desktops to get better 
-         * expierence with different screen resolutions.
-         */
-        switch(Gdx.app.getType()) {
-        case Android:
-            numOfPipes = 2;
-            break;
-        default:
-            numOfPipes = 6;
-            break;
-        }
-        
         batch       = new SpriteBatch();
-        pipesArr    = new PipeArray(numOfPipes, 400);    
-        bird        = new Bird("bird.png", 30f, 700f, 50f, 1.5f);
+        pipesArr    = new PipeArray(numOfPipes, 350);    
+        bird        = new Bird("textures/bird.png", 30f, 700f, 50f, 1.5f);
         collision   = new Collision(pipesArr.getPipes());
         score       = new Score(pipesArr.getPipes(), 65);   
-        background  = new Background("bg.jpg", 140);
+        background  = new Background("textures/bg.jpg", 140);
         gameOver    = new GameOver(40);
+        gameReady   = new GameReady(40);
     }
     
     @Override
@@ -85,7 +79,7 @@ public class FlappyGame extends ApplicationAdapter {
     public void update(float deltaTimeSeconds) { 
         switch (state) {
         case GAME_READY:
-            //updateReady(deltaTimeSeconds);
+            updateReady(deltaTimeSeconds);
             break;
         case GAME_RUNNING:
             updateRunning(deltaTimeSeconds);
@@ -104,7 +98,7 @@ public class FlappyGame extends ApplicationAdapter {
     public void draw (SpriteBatch batch) {
         switch (state) {
         case GAME_READY:
-            //presentReady(batch);
+            presentReady(batch);
             break;
         case GAME_RUNNING:
             presentRunning(batch);
@@ -122,6 +116,7 @@ public class FlappyGame extends ApplicationAdapter {
         pipesArr.disposePipesArr();
         score.disposeScore();
         gameOver.disposeGameOver();
+        gameReady.disposeGameReady();
     }
 
     public void updateRunning(float dt) {
@@ -134,7 +129,7 @@ public class FlappyGame extends ApplicationAdapter {
         /* SWITCHING STATE */
         if (collision.isbirdCollision(bird, pipesArr.getPipes())) {
             gameOver.initGameOver(score, bird);
-            state = GAME_OVER;
+            state = GameState.GAME_OVER;
         }
     }
     
@@ -151,8 +146,8 @@ public class FlappyGame extends ApplicationAdapter {
 
         /* SWITCHING STATE */
         if (gameOver.toContinue(bird) ) {
-            this.create();
-            state = GAME_RUNNING;
+            resetGame();
+            state = GameState.GAME_READY;
         }
     }
     
@@ -164,12 +159,32 @@ public class FlappyGame extends ApplicationAdapter {
     }
     
     public void updateReady(float dt) {
+        background.updateBg(dt);
         bird.updateBird(dt);
+        gameReady.updateGameReadyMenu(dt, bird);
+        
+        /* SWITCHING STATE */
+        if (gameReady.toContinue() ) {
+            bird.birdUp();
+            state = GameState.GAME_RUNNING;
+        }
     }
     
     public void presentReady(SpriteBatch batch) {
+        background.drawBg(batch);
         bird.drawBird(batch);
-        pipesArr.drawPipesArr(batch);
+        gameReady.drawGameReadyMenu(batch);
     }
-      
+    
+    /**
+     * Called when starting a new game to reset some objects data to default.
+     */
+    public void resetGame() {
+        bird.resetBird();
+        score.resetScore();
+        pipesArr.resetPipesArr();
+        gameReady.resetGameReady();
+        gameOver.resetGameOver();
+    }
+    
 }

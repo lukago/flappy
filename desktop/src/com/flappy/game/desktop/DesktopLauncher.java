@@ -12,6 +12,7 @@ public class DesktopLauncher {
 		config.useGL30 = true;
 		config.height = 800;
 		config.width = 480;
+		config.resizable = false;
 		new LwjglApplication(new FlappyGame(), config);
 	}
 }
