@@ -12,25 +12,27 @@ import com.badlogic.gdx.math.Vector2;
  * @author https://github.com/glbwsk
  */
 
-public class Game extends ApplicationAdapter {
+public class FlappyGame extends ApplicationAdapter {
     static final int GAME_READY = 0;
     static final int GAME_RUNNING = 1;
     static final int GAME_OVER = 2;
     private int state;
+    private int numOfPipes;
 
     private SpriteBatch batch;
     private Bird bird;
     private Collision collision;
     private Score score;
     private Background background;
+    private GameOver gameOver;
     
-    // game window size
+    /* game window size */
     static Vector2 window;
 
-    // array of pipes
+    /* array of pipes */
     private PipeArray pipesArr;
 
-    // variables for time handling
+    /* variables for time handling */
     static final float DT = 1 / 30.0f;
     
     @Override
@@ -40,25 +42,35 @@ public class Game extends ApplicationAdapter {
         window.x = Gdx.graphics.getWidth();
         window.y = Gdx.graphics.getHeight();
         
+        /*
+         * create more pipes on desktops to get better 
+         * expierence with different screen resolutions.
+         */
+        switch(Gdx.app.getType()) {
+        case Android:
+            numOfPipes = 2;
+            break;
+        default:
+            numOfPipes = 6;
+            break;
+        }
+        
         batch       = new SpriteBatch();
-        pipesArr    = new PipeArray(2, 400);    
+        pipesArr    = new PipeArray(numOfPipes, 400);    
         bird        = new Bird("bird.png", 30f, 700f, 50f, 1.5f);
         collision   = new Collision(pipesArr.getPipes());
         score       = new Score(pipesArr.getPipes(), 65);   
-        background  = new Background("bg.jpg", 140);         
+        background  = new Background("bg.jpg", 140);
+        gameOver    = new GameOver(40);
     }
     
     @Override
     public void render() {
-        /*
-         * UPDATE SECTION
-         */
+        /* UPDATE SECTION */
         float deltaTimeSeconds = Math.min(Gdx.graphics.getDeltaTime(), DT);
         update(deltaTimeSeconds);
         
-        /*
-         * DRAW SECTION
-         */
+        /* DRAW SECTION */
         Gdx.gl.glClearColor(0, 0, 0, 0);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
@@ -109,6 +121,7 @@ public class Game extends ApplicationAdapter {
         bird.disposeBird();
         pipesArr.disposePipesArr();
         score.disposeScore();
+        gameOver.disposeGameOver();
     }
 
     public void updateRunning(float dt) {
@@ -118,8 +131,9 @@ public class Game extends ApplicationAdapter {
         pipesArr.updatePipesArr(dt);
         score.updateScore(bird, pipesArr.getPipes());
         
+        /* SWITCHING STATE */
         if (collision.isbirdCollision(bird, pipesArr.getPipes())) {
-            bird.setVelocity(0);
+            gameOver.initGameOver(score, bird);
             state = GAME_OVER;
         }
     }
@@ -132,9 +146,11 @@ public class Game extends ApplicationAdapter {
     }
     
     public void updateGameOver(float dt) {
-        bird.updateBird(dt);       
-        //TODO: menu
-        if (bird.getBirdShape().y < -2*bird.getBirdShape().radius ) {
+        bird.updateBird(dt);
+        gameOver.updateGameOverMenu(dt);
+
+        /* SWITCHING STATE */
+        if (gameOver.toContinue(bird) ) {
             this.create();
             state = GAME_RUNNING;
         }
@@ -144,6 +160,7 @@ public class Game extends ApplicationAdapter {
         background.drawBg(batch);
         pipesArr.drawPipesArr(batch);
         bird.drawBird(batch);
+        gameOver.drawGameOverMenu(batch);
     }
     
     public void updateReady(float dt) {

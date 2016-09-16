@@ -57,7 +57,7 @@ public class Pipe {
      * @return float random pipe height 
      */
     public float getRandHeight() {
-        return generator.nextFloat() * (Game.window.y - (gapHeight+200)) + 100;
+        return generator.nextFloat() * (FlappyGame.window.y - (gapHeight+200)) + 100;
     }
     
     /**
@@ -65,7 +65,7 @@ public class Pipe {
      * loading textures or creating new objects.
      */
     public void setPipes() {
-        startPos = Game.window.x + 200;
+        startPos = FlappyGame.window.x + 200;
         gapHeight = 200;
         speed = 200;
         pipeAnimSpeed = 1000;
@@ -76,7 +76,7 @@ public class Pipe {
         pipeLow.y = 0;
 
         pipeUp.width = pipeLow.width;
-        pipeUp.height = Game.window.y - pipeLow.height - gapHeight;
+        pipeUp.height = FlappyGame.window.y - pipeLow.height - gapHeight;
         pipeUp.x = startPos;
         pipeUp.y = pipeLow.height + gapHeight;
         
@@ -134,15 +134,15 @@ public class Pipe {
      */
     public void pipeAnim(float dt) {
         //TODO: optymize 
-        if (pipeLow.x >= Game.window.x && pipeLow.y == 0) {
+        if (pipeLow.x >= FlappyGame.window.x && pipeLow.y == 0) {
             pipeLow.y -= pipeLow.height;
         }
         
-        if (pipeUp.x >= Game.window.x && pipeUp.y == pipeLow.height + gapHeight) {
+        if (pipeUp.x >= FlappyGame.window.x && pipeUp.y == pipeLow.height + gapHeight) {
             pipeUp.y += pipeUp.height;
         }   
         
-        if (pipeLow.y < 0 && pipeLow.x < Game.window.x ) {
+        if (pipeLow.y < 0 && pipeLow.x < FlappyGame.window.x ) {
             pipeLow.y += pipeAnimSpeed * dt;
         }
         
@@ -150,7 +150,7 @@ public class Pipe {
             pipeLow.y = 0;
         }
         
-        if (pipeUp.y > pipeLow.height + gapHeight && pipeUp.x < Game.window.x ) {
+        if (pipeUp.y > pipeLow.height + gapHeight && pipeUp.x < FlappyGame.window.x ) {
             pipeUp.y -= pipeAnimSpeed * dt;
         }
         

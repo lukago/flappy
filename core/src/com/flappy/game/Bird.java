@@ -13,10 +13,10 @@ import com.badlogic.gdx.math.Circle;
 
 public class Bird {
 
-    // bird representation
+    /* bird representation */
     private Circle birdShape;
 
-    // movement
+    /* movement */
     private float velocity;
     private float gravity;
     private float lift;
@@ -25,7 +25,7 @@ public class Bird {
     float rotation;
     float stateTime;
 
-    // animations
+    /* animations */
     private static final int FRAME_COLS = 3;
     private static final int FRAME_ROWS = 1;
     private Animation flyAnimation;
@@ -43,8 +43,8 @@ public class Bird {
      */
     public Bird(String birdImgSrc, float gravity, float lift, float liftRotation, float fallRotation) {
         birdShape = new Circle();
-        birdShape.x = Game.window.x / 4;
-        birdShape.y = Game.window.y / 2;
+        birdShape.x = FlappyGame.window.x / 4;
+        birdShape.y = FlappyGame.window.y / 2;
         birdShape.radius = 25;
 
         this.gravity = -gravity;
@@ -56,13 +56,13 @@ public class Bird {
         rotation = 0f;
         stateTime = 0f;
 
-        // textures and animation variables initializaton
+        /* textures and animation variables initializaton */
         birdSheet = new Texture(Gdx.files.internal(birdImgSrc));
         birdFrames = new TextureRegion[FRAME_COLS * FRAME_ROWS];
 
         loadBirdFrames();
 
-        // set each animation time here
+        /* set each animation time here */
         flyAnimation = new Animation(0.1f, birdFrames);
         currentFrame = flyAnimation.getKeyFrame(stateTime, true);
     }
@@ -93,14 +93,14 @@ public class Bird {
             rotation -= fallRotation;
         }
 
-        // choosing the aniamtion frame depending of elapsed time
+        /* choosing the aniamtion frame depending of elapsed time */
         stateTime += dt;
         currentFrame = flyAnimation.getKeyFrame(stateTime, true);
 
-        // crossing game window handling
-        if (birdShape.y > Game.window.y - birdShape.radius) {
+        /* crossing game window handling */
+        if (birdShape.y > FlappyGame.window.y - birdShape.radius) {
             velocity = 0;
-            birdShape.y = Game.window.y - birdShape.radius;
+            birdShape.y = FlappyGame.window.y - birdShape.radius;
         }
     }
 
@@ -125,11 +125,11 @@ public class Bird {
      * Sets up birdFrames from birdSheet.
      */
     private void loadBirdFrames() {
-        // temporary array of arrays to use TextureRegion.split() method
+        /* temporary array of arrays to use TextureRegion.split() method */
         TextureRegion[][] tmp = TextureRegion.split(birdSheet, birdSheet.getWidth() / FRAME_COLS,
                 birdSheet.getHeight() / FRAME_ROWS);
 
-        // initialization of birdFrames using tmp[][]
+        /* initialization of birdFrames using tmp[][] */
         int index = 0;
         for (int i = 0; i < FRAME_ROWS; i++) {
             for (int j = 0; j < FRAME_COLS; j++) {
@@ -138,7 +138,7 @@ public class Bird {
         }
     }
 
-    // setters & getters
+    /* setters & getters */
     public Circle getBirdShape() {
         return birdShape;
     }

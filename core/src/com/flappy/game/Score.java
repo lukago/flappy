@@ -1,17 +1,28 @@
 package com.flappy.game;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 
 /**
- * Score drawing, updating and handling
+ * Score drawing, updating and handling.
  */
 
 public class Score {
+    final String SCORE_FILE_PATH = "score";
+    
     private Text text;
     private int score;
+    private int bestScore;
     private Collision collision;
     private Vector2 position;
+    private boolean newBestScore;
 
     /**
      * Class constructor
@@ -20,9 +31,12 @@ public class Score {
      */
     public Score(Pipe[] pipes, int fontSize) {
         collision = new Collision(pipes);
-        position = new Vector2(Game.window.x/2, Game.window.y-100);
+        position = new Vector2(FlappyGame.window.x/2, FlappyGame.window.y-100);
         score = 0;
-        text = new Text("college.otf", fontSize, 5, Integer.toString(score), position.x, position.y); 
+        bestScore = 0;
+        newBestScore = false;
+        text = new Text("college.otf", fontSize, 5, Integer.toString(score), position.x, position.y);
+        readBestScore();
     }
 
     /**
@@ -51,6 +65,68 @@ public class Score {
      */
     public void disposeScore() {
         text.disposeText();
+    }
+    
+    /**
+     * Reads bestScore from file.
+     */
+    public void readBestScore() {
+        BufferedReader inputStream = null;
+        
+        try {
+            inputStream = new BufferedReader(new FileReader(SCORE_FILE_PATH));
+            String text;
+
+            if ((text = inputStream.readLine()) != null) {
+                bestScore = Integer.parseInt(text);
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (inputStream != null) {
+                try {
+                    inputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+    
+    /**
+     * Sets bestScore and saves it to file.
+     */
+    public void setBestScore() {
+        PrintWriter outputStream = null;
+        
+        try {
+            outputStream = new PrintWriter(new FileWriter(SCORE_FILE_PATH));
+
+            if (score > bestScore) {
+                newBestScore = true;
+                bestScore = score;
+                outputStream.println(bestScore);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (outputStream != null) {
+                outputStream.close();
+            }
+        }
+    }
+    
+    /* setters & getters */
+    public int getBestScore() {
+        return bestScore;
+    }
+    
+    public boolean isNewBestScore() {
+        return newBestScore;
     }
     
 }

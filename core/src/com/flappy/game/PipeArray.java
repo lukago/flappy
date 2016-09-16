@@ -80,7 +80,7 @@ public class PipeArray {
 		return ( ( num%mod ) + mod )%mod;
 	}
 	
-	// getters & setters
+	/* getters & setters */
 	public Pipe[] getPipes() {
 		return pipes;
 	}

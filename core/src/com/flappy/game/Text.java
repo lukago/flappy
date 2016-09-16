@@ -16,8 +16,7 @@ import com.badlogic.gdx.math.Vector2;
 public class Text {
     /*
      * FreeTypeFont is libGDX extension allows to use .ttf fonts and flexible
-     * font size setting.
-     * GlyphLayout is to get text width
+     * font size setting. GlyphLayout is to get text width.
      */
     private FreeTypeFontGenerator generator;
     private FreeTypeFontParameter parameter;
@@ -25,7 +24,7 @@ public class Text {
     private GlyphLayout glyphLayout;
     private String textStr;
     
-    // text position
+    /* text position */
     private Vector2 position;
     
     /**
@@ -75,7 +74,7 @@ public class Text {
         generator.dispose();
     }
     
-    // getters & setters
+    /* getters & setters */
     public void setText(String textStr) {
         this.textStr = textStr;
         glyphLayout.setText(font, this.textStr);
@@ -84,5 +83,10 @@ public class Text {
     public void setPosition(int x, int y) {
         position.x = x;
         position.y = y;
+    }
+    
+    public  void setFontColor(Color color) {
+        font.setColor(color);
+        glyphLayout.setText(font, this.textStr);
     }
 }
