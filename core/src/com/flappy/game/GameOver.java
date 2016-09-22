@@ -10,7 +10,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
  */
 
 public class GameOver {
-    private final String[] INFO_STR = {"GAME OVER!", "BEST SCORE: ", "TAP TO CONTINUE" };
+    private final String[] INFO_STR = {"GAME OVER!", "SCORE: ", "BEST SCORE: ", "TAP TO CONTINUE" };
     private Text[] text;
     private Sound hitSound;
     private Sound dieSound;
@@ -23,7 +23,6 @@ public class GameOver {
      * @param fontSize font size in pixels
      */
     public GameOver(int fontSize) {     
-        totalTime = 0;
         birdDown = false; 
         hitSound = Gdx.audio.newSound(Gdx.files.internal("sounds/hit.ogg"));
         dieSound = Gdx.audio.newSound(Gdx.files.internal("sounds/die.ogg"));
@@ -31,7 +30,7 @@ public class GameOver {
         text = new Text[INFO_STR.length];
         for (int i=0; i < text.length; i++) {
             text[i] = new Text("fonts/college.otf", fontSize, 3, INFO_STR[i], 
-                    FlappyGame.window.x / 2, FlappyGame.window.y - 200*(i+1));
+                    FlappyGame.window.x / 2, FlappyGame.window.y - 100*(i+1));
         } 
     }
     
@@ -53,7 +52,10 @@ public class GameOver {
         /* display */
         bird.setVelocity(0);
         score.setBestScore();
-        text[1].setText(INFO_STR[1]+score.getBestScore());
+        
+        /* modify texts here */
+        text[1].setText(INFO_STR[1]+score.getScore());
+        text[2].setText(INFO_STR[2]+score.getBestScore());
         if(score.isNewBestScore()) {
             text[0].setText("NEW BEST SCORE!");
         } 
@@ -79,10 +81,10 @@ public class GameOver {
     public void updateGameOverMenu(float dt) {
         totalTime += dt;
         if (totalTime < 0.5) {
-            text[2].setFontColor(Color.GOLD);
+            text[3].setFontColor(Color.GOLD);
         }
         else if (totalTime < 1.0) {
-            text[2].setFontColor(Color.WHITE);
+            text[3].setFontColor(Color.WHITE);
         }
         else {
             totalTime = 0;
@@ -94,24 +96,24 @@ public class GameOver {
      */
     public void drawGameOverMenu(SpriteBatch batch) {     
         if (birdDown) {
-            for (int i=0; i < text.length; i++) {
-                text[i].drawTextCentered(batch);
+            for (Text itext : text) {
+                itext.drawTextCentered(batch);
             }
         }
     }
     
-    /*
+    /**
      * Called when object gets removed.
      */
     public void disposeGameOver() {
-        for (int i=0; i < text.length; i++) {
-            text[i].disposeText();
+        for (Text itext : text) {
+            itext.disposeText();
         }
         hitSound.dispose();
         dieSound.dispose();
     }
     
-    /*
+    /**
      * Called when starting new game.
      */
     public void resetGameOver() {

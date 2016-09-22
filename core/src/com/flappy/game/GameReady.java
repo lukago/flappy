@@ -4,6 +4,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+/**
+ * Class for handling GameReady state
+ */
+
 public class GameReady {
     private final String[] INFO_STR = {"TAP TO START"};
     private Text[] text;
@@ -14,7 +18,6 @@ public class GameReady {
      * @param fontSize size in pixels
      */
     public GameReady(int fontSize) {
-        totalTime = 0;
         text = new Text[INFO_STR.length];
         for (int i=0; i < text.length; i++) {
             text[i] = new Text("fonts/college.otf", fontSize, 3, INFO_STR[i], 
@@ -55,21 +58,21 @@ public class GameReady {
     }
     
     public void drawGameReadyMenu(SpriteBatch batch) {     
-        for (int i=0; i < text.length; i++) {
-            text[i].drawTextCentered(batch);
+        for (Text itext : text) {
+            itext.drawTextCentered(batch);
         }
     }
     
-    /*
+    /**
      * Called when object gets removed.
      */
     public void disposeGameReady() {
-        for (int i=0; i < text.length; i++) {
-            text[i].disposeText();
+        for (Text itext : text) {
+            itext.disposeText();
         }
     }
     
-    /*
+    /**
      * Called when starting new game.
      */
     public void resetGameReady() {

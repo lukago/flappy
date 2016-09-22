@@ -32,9 +32,6 @@ public class Score {
     public Score(Pipe[] pipes, int fontSize) {
         collision = new Collision(pipes);
         position = new Vector2(FlappyGame.window.x/2, FlappyGame.window.y-100);
-        score = 0;
-        bestScore = 0;
-        newBestScore = false;
         text = new Text(FONT_FILE_PATH, fontSize, 5, Integer.toString(score), position.x, position.y);
         pointSound =  Gdx.audio.newSound(Gdx.files.internal(SOUND_FILE_PATH));
     }
@@ -109,6 +106,10 @@ public class Score {
     }
     
     /* setters & getters */
+    public int getScore() {
+        return score;
+    }
+    
     public int getBestScore() {
         return bestScore;
     }

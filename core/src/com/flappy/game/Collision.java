@@ -16,9 +16,6 @@ public class Collision {
      */
     public Collision(Pipe[] pipes) {
         scoreFlags = new boolean[pipes.length];
-        for (int i = 0; i < scoreFlags.length; i++) {
-            scoreFlags[i] = false;
-        }
     }
     
     /**

@@ -56,10 +56,6 @@ public class Bird {
         this.liftRotation = liftRotation;
         this.fallRotation = fallRotation;
 
-        velocity = 0f;
-        rotation = 0f;
-        stateTime = 0f;
-
         birdSheet = new Texture(Gdx.files.internal(birdImgSrc));
         birdFrames = new TextureRegion[FRAME_COLS * FRAME_ROWS];
         birdUpSound =  Gdx.audio.newSound(Gdx.files.internal("sounds/wing.ogg"));
@@ -67,8 +63,7 @@ public class Bird {
         /* set each animation time here */
         loadBirdFrames();
         flyAnimation = new Animation(0.1f, birdFrames);
-        currentFrame = flyAnimation.getKeyFrame(stateTime, true);
-        
+        currentFrame = flyAnimation.getKeyFrame(stateTime, true);    
     }
 
     public Bird() {
