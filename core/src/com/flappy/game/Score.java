@@ -102,6 +102,7 @@ public class Score {
     
     public void resetScore() {
         score = 0;
+        newBestScore = false;
         text.setText(Integer.toString(score));
     }
     
